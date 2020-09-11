@@ -1,3 +1,33 @@
 micronaut:
   application:
-    name: micronautUserManager
+    name: ${APPLICATION_NAME:micronautUserManager}
+  server:
+    port: ${APPLICATION_PORT:8080}
+---
+application-configuration:
+  max: 5
+---
+datasources:
+  default:
+    url: ${JDBC_URL:`jdbc:postgresql://localhost:5432/postgres`}
+    driverClassName: org.postgresql.Driver
+    username: ${JDBC_USER:postgres}
+    password: ${JDBC_PASSWORD:''}
+    schema-generate: CREATE_DROP
+    dialect: POSTGRES
+---
+jpa:
+  default:
+    packages-to-scan:
+      - 'com.ionos.model'
+    properties:
+      hibernate:
+        hbm2ddl:
+          auto: update
+        show_sql: true
+---
+consul:
+  client:
+    registration:
+      enabled: true
+    defaultZone: "${CONSUL_HOST:localhost}:${CONSUL_PORT:8500}"
